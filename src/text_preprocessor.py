@@ -137,6 +137,7 @@ class TextPreprocessor:
         '''Returns corpus without stopwords.'''
         #create list of stopwords to remove
         stopword_list = stopwords.words('english')
+        stopword_list += ["verified", "zero", "flight", "flights", "trip", "good", "seven"]
 
         #remove stopwords
         corpus = [[token for token in tokenized_review if token not in stopword_list] 
