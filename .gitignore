@@ -128,4 +128,7 @@ dmypy.json
 # Pyre type checker
 .pyre/
 # Large files
+data/preprocessed/preprocessed_reviews.pkl
+data/preprocessed/concat_raw_reviews.csv
 data/inputs/skytrax_scraping_2.csv
+notebooks/cities.pkl
