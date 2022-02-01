@@ -1,0 +1,6 @@
+pandas
+numpy
+scikit-learn
+gensim==3.8.0
+pyLDAvis==2.1.2
+nltk==3.4.5
