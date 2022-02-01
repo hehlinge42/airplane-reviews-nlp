@@ -127,5 +127,11 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+notebooks/gsdmm
+
 # Large files
+data/preprocessed/preprocessed_reviews.pkl
+data/preprocessed/concat_raw_reviews.csv
+data/preprocessed/reviews_metadata.pickle
 data/inputs/skytrax_scraping_2.csv
