@@ -161,21 +161,26 @@ class TextPreprocessor:
 
         return [" ".join(grams) for grams in n_grams]
 
-    def _tokenizer(self, n_grams):
+    def _tokenizer(self, n_grams, remove_stopwords, max_lenght=50):
         """Returns tokenized corpus."""
+        corpus = [word_tokenize(review) for review in self.corpus]
+        corpus = [
+            review if len(review) < max_lenght else review[:max_lenght]
+            for review in corpus
+        ]
+
+        if remove_stopwords:
+            corpus = [self._remove_stopwords(review) for review in corpus]
+
         if n_grams:
-            corpus = [
-                word_tokenize(review)
-                + self._ngrams(review, 2)
-                + self._ngrams(review, 3)
-                for review in self.corpus
-            ]
+            n_grams = [self._ngrams(" ".join(review), 2) for review in corpus]
         else:
-            corpus = [word_tokenize(review) for review in self.corpus]
+            n_grams = None
 
-        return corpus
+        return corpus, n_grams
 
-    def _stopword_remover(self):
+    @staticmethod
+    def _remove_stopwords(review):
         """Returns corpus without stopwords."""
         # create list of stopwords to remove
         stopword_list = stopwords.words("english")
@@ -184,26 +189,23 @@ class TextPreprocessor:
             os.path.join("..", "data", "resources", "cities_and_countries.json"), "rb"
         ) as f:
             cities_in_reviews = json.load(f)
-        cities = list(cities_in_reviews.keys())
-        countries = list(set(cities_in_reviews.values()))
-        print(f"cities: {cities}")
-        print(f"countries: {countries}")
+        cities = [city.lower() for city in list(cities_in_reviews.keys())]
+        countries = [
+            country.lower() for country in list(set(cities_in_reviews.values()))
+        ]
         stopword_list += cities
         stopword_list += countries
 
         # remove stopwords
-        corpus = [
-            [token for token in tokenized_review if token not in stopword_list]
-            for tokenized_review in self.corpus
-        ]
+        review = [token for token in review if token not in stopword_list]
 
-        return corpus
+        return review
 
     def transform(self, tokenize=True, remove_stopwords=False, n_grams=False):
         # call lowercase
         self.corpus = self._lowercase_transformer()
         # call digit_tranformer
-        self.corpus = self._digit_transformer()
+        # self.corpus = self._digit_transformer()
         # call decontractor
         self.corpus = [self.decontractor(review) for review in self.corpus]
         # call accent_tranformer
@@ -212,15 +214,7 @@ class TextPreprocessor:
         self.corpus = self._char_filter()
 
         if tokenize:
-            # call tokenizer
-            self.corpus = self._tokenizer(n_grams)
-
-        if remove_stopwords:
-            if tokenize:
-                # call stopword remover
-                self.corpus = self._stopword_remover()
-            else:
-                raise ValueError("To remove stopwords, tokenize must be True")
+            self.corpus, self.n_grams = self._tokenizer(n_grams, remove_stopwords)
 
 
 # function to split reviews by sentence
