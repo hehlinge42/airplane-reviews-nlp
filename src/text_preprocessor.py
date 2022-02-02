@@ -195,6 +195,7 @@ class TextPreprocessor:
         ]
         stopword_list += cities
         stopword_list += countries
+        stopword_list += ["verified", "zero", "flight", "flights", "trip", "good", "seven"]
 
         # remove stopwords
         review = [token for token in review if token not in stopword_list]
