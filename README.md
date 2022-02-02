@@ -3,7 +3,22 @@
 
 # EDA
 ## Notebooks
-We used exploration notebooks to extract quick insights from the data to then inform our next steps.
+We used exploration notebooks to extract quick insights from the data to then inform our next steps. 
+
+In this notebook:
+```
+notebooks/exploration.ipynb
+```
+We applied :
+- Added metadata and time series analysis
+- Applied TF-IDF
+- Embedded the reviews
+- Applied LDA
+- Plotted Wordclouds
+- Explored N grams
+- SHAP analysis
+
+
 
 
 # Data Pipeline
